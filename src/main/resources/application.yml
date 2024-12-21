@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: busca-endereco
+
+server:
+  servlet:
+    context-path: /api/v1/buscador
+
+via-cep:
+    baseUrl: https://viacep.com.br/ws
