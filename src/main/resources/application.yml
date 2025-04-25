@@ -1,10 +1,20 @@
 spring:
   application:
     name: busca-endereco
-
-server:
-  servlet:
-    context-path: /api/v1/buscador
-
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    enabled: true
+    web:
+      resources:
+        static-locations: classpath:/static/
+  web:
+    cors:
+      mappings:
+        - path-pattern: "/**"
+          allowed-origins: "*"
+#server:
+#  servlet:
+#    context-path: /buscador
 via-cep:
     baseUrl: https://viacep.com.br/ws
