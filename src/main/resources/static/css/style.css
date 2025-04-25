@@ -1,0 +1,17 @@
+body {
+  background: #f0f2f5;
+}
+
+.card-custom {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content {
+  border-radius: 20px;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Endereço</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f0f2f5;
+        }
+
+        .card-custom {
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header, .modal-footer {
+            border: none;
+        }
+
+        .modal-content {
+            border-radius: 20px;
+        }
+    </style>
+
+    <script>
+        async function buscarEndereco() {
+            const cep = document.getElementById('cep').value;
+            const url = `http://localhost:8080/api/v1/endereco/buscar/${cep}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar o endereço. Verifique o CEP.");
+                }
+                const endereco = await response.json();
+
+                const fields = [
+                    'logradouro', 'complemento', 'unidade', 'bairro', 'localidade', 'uf',
+                    'estado', 'regiao', 'ibge', 'gia', 'ddd', 'siafi'
+                ];
+                fields.forEach(field => {
+                    document.getElementById(field).textContent = endereco[field] || 'N/A';
+                });
+
+                new bootstrap.Modal(document.getElementById('enderecoModal')).show();
+
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4 card-custom">
+                <h2 class="text-center mb-4">Buscar Endereço por CEP</h2>
+                <form onsubmit="event.preventDefault(); buscarEndereco();">
+                    <div class="mb-3">
+                        <label for="cep" class="form-label">CEP:</label>
+                        <input type="text" id="cep" name="cep" class="form-control" placeholder="Digite o CEP" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de exibição dos dados -->
+<div class="modal fade" id="enderecoModal" tabindex="-1" aria-labelledby="enderecoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Dados do Endereço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 mb-2"><strong>Logradouro:</strong> <span id="logradouro" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Complemento:</strong> <span id="complemento" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Unidade:</strong> <span id="unidade" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Bairro:</strong> <span id="bairro" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Localidade:</strong> <span id="localidade" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>UF:</strong> <span id="uf" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Estado:</strong> <span id="estado" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>Região:</strong> <span id="regiao" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>IBGE:</strong> <span id="ibge" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>GIA:</strong> <span id="gia" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>DDD:</strong> <span id="ddd" class="text-muted">N/A</span></div>
+                    <div class="col-md-6 mb-2"><strong>SIAFI:</strong> <span id="siafi" class="text-muted">N/A</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
